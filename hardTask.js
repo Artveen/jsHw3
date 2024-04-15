@@ -7,6 +7,7 @@ function readJsonFile(number, callback) {
     fs.readFile(filename, 'utf8', (error, data) => {
         if (error) {
             console.error("Error reading file:", error);
+            callback(error); // Викликаємо зворотну функцію з помилкою
             return;
         }
 
@@ -15,6 +16,7 @@ function readJsonFile(number, callback) {
             callback(null, jsonObject, number);
         } catch (error) {
             console.error("Error parsing JSON:", error);
+            callback(error); // Викликаємо зворотну функцію з помилкою
         }
     });
 }
@@ -39,6 +41,11 @@ readJsonFile('0069', (error, users, number) => {
         return;
     }
 
+    if (!users) {
+        console.log("No users found in the JSON file.");
+        return;
+    }
+
     const user = findUserByNumber(number, users);
     if (user) {
         printUserInfo(user);
@@ -46,4 +53,5 @@ readJsonFile('0069', (error, users, number) => {
         console.log("User with such number not found.");
     }
 });
+
 
